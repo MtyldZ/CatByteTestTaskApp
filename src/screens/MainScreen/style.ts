@@ -1,11 +1,9 @@
 import {StyleSheet} from 'react-native';
-import {screenWidth} from '../../utils/dimensions';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexDirection: 'row',
     flexWrap: 'wrap',
-    width: screenWidth,
   },
   button: {
     marginHorizontal: 12,

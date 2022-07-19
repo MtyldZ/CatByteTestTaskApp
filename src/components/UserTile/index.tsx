@@ -9,7 +9,7 @@ export const UserTile = memo((props: {user: User}) => {
   const navigation = useNavigation();
 
   const onPressed = useCallback(() => {
-    console.log('pressed');
+    // @ts-ignore
     navigation.navigate('DetailedUser', {user: props.user});
   }, [navigation, props.user]);
 

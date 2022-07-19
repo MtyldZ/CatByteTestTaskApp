@@ -6,15 +6,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import {UserService} from '../../api/UserService';
 import {setUserAction} from '../../store/user/action';
 import {UserTile} from '../../components/UserTile';
+import {User} from '../../models/user.model';
 
 export const MainScreen = memo(function MainScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const userList = useSelector(state => state.user.userList);
+  const userList: User[] = useSelector(state => state.user.userList);
+
+  const onAddUserPressed = useCallback(() => {
+    // @ts-ignore
+    navigation.navigate('AddUser');
+  }, [navigation]);
 
   const fetchUsers = useCallback(async () => {
-    const userList = await UserService.fetchUsers();
-    dispatch(setUserAction(userList));
+    const users = await UserService.fetchUsers();
+    dispatch(setUserAction(users));
   }, [dispatch]);
 
   useEffect(() => {
@@ -23,15 +29,13 @@ export const MainScreen = memo(function MainScreen() {
 
   return (
     <>
-      <ScrollView
-        contentContainerStyle={styles.container}
-        style={styles.container}>
-        {userList.map(user => (
-          <UserTile user={user} key={`key_${user.id}`} />
+      <ScrollView contentContainerStyle={styles.container}>
+        {userList.map((user, index) => (
+          <UserTile user={user} key={`key_${index}`} />
         ))}
       </ScrollView>
       <View style={styles.button}>
-        <Button color={'#33f'} title={'Add User'} />
+        <Button onPress={onAddUserPressed} color={'#33f'} title={'Add User'} />
       </View>
     </>
   );
