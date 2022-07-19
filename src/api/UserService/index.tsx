@@ -8,6 +8,7 @@ export class UserService {
   static fetchUsers() {
     function mapperFunction(userData: UserResponseType): User {
       const {
+        id,
         firstName,
         lastName,
         age,
@@ -17,6 +18,7 @@ export class UserService {
         },
       } = userData;
       return {
+        id,
         firstName,
         lastName,
         age,

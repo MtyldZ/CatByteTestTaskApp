@@ -3,12 +3,15 @@ import {Button, Text, TextInput, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {styles} from './style';
 import {User} from '../../models/user.model';
-import {useDispatch} from 'react-redux';
+import {DefaultRootState, useDispatch, useSelector} from 'react-redux';
 import {addUserAction} from '../../store/user/action';
 
 export const AddUserScreen = memo(function AddUserScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const lastUserID = useSelector<DefaultRootState, number>(
+    state => state.user.userList[state.user.userList.length - 1].id || 0,
+  );
 
   const firstNameRef = useRef<string>('');
   const lastNameRef = useRef<string>('');
@@ -22,6 +25,7 @@ export const AddUserScreen = memo(function AddUserScreen() {
 
   const onAddUserPressed = useCallback(() => {
     const user: User = {
+      id: lastUserID + 1,
       firstName: firstNameRef.current,
       lastName: lastNameRef.current,
       image: imageRef.current,
@@ -38,7 +42,7 @@ export const AddUserScreen = memo(function AddUserScreen() {
     dispatch(addUserAction(user));
     // @ts-ignore
     navigation.navigate('Main');
-  }, [age]);
+  }, [age, dispatch, lastUserID, navigation]);
 
   const onBackPressed = useCallback(() => {
     // @ts-ignore
